@@ -1,0 +1,36 @@
+{% load render_partial %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        {% block title %}
+            Material Dashboard 2 by Creative Tim
+        {% endblock %}
+    </title>
+    {% render_partial 'Panel_Admin.views.header_ref_admin_panel' %}
+    {% block ext_style %}
+
+    {% endblock ext_style %}
+</head>
+
+<body class="g-sidenav-show  bg-gray-200">
+{% render_partial 'Panel_Admin.views.left_aside_admin_panel' %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    {% render_partial 'Panel_Admin.views.top_path_and_navbar_admin_panel' %}
+    <div class="container-fluid py-4">
+        {% block main %}
+
+        {% endblock main %}
+        {% render_partial 'Panel_Admin.views.footer_admin_panel' %}
+    </div>
+</main>
+{% render_partial 'Panel_Admin.views.settings_admin_panel' %}
+<!--   Core JS Files   -->
+{% render_partial 'Panel_Admin.views.footer_ref_admin_panel' %}
+{% block ext_script %}
+
+{% endblock %}
+</body>
+</html>

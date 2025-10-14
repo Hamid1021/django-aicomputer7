@@ -1,0 +1,29 @@
+{% load static render_partial %}<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+    <head>
+        {% render_partial 'config.component.herader_ref' %}
+        <title>انجمن علمی کامپیوتر{% block title %}{% endblock title %}</title>
+        {% block ext_style %}
+                
+        {% endblock ext_style %}
+    </head>
+    <body dir="rtl" lang="fa" class="text-gray-800">
+        <div class="min-h-screen flex flex-col">
+            {% render_partial 'config.component.top_header' %}
+
+            {% render_partial 'config.component.header' %}
+            
+            <main class="flex-grow items-center px-4 py-8 space-y-10">
+                {% block main %}
+                
+                {% endblock main %}
+            </main>
+        </div>
+        {% render_partial 'config.component.footer' %}
+
+        {% render_partial 'config.component.footer_ref' %}
+        {% block ext_script %}
+                
+        {% endblock ext_script %}
+    </body>
+</html>

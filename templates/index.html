@@ -1,0 +1,94 @@
+{% extends "base/_layout.html" %} {% load static render_partial %} {% block title %} {% endblock title %} {% block main %} {% render_partial 'config.component.clubs' is_footer=False %}
+
+<section id="Gools" class="animate-fade-in-up duration-1000">
+    <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center border-b-2 border-yellow-500 pb-4 flex justify-between items-center mx-auto xl:mx-[150px]">
+        <span>اهداف انجمن ها</span>
+    </h2>
+    <div class="goles">
+        <div class="flex flex-col justify-center items-center">
+            <img src="{% static "/src/img/icon/paper.svg" %}" alt="" class="size-[70px]" />
+            <b class="text-lg font-bold mb-4">اطلاع رسانی فعالیت انجمن ها</b>
+            <p class="text-center text-sm">کمک به دانشکده در برگزاری جلسات معارفه،پرسش و پاسخ ، مراسم مرتبط با مناسبت ها ، برگزاری نمایشگاه های ترویجی و علمی ارکان وتشکیلات</p>
+        </div>
+        <div class="flex flex-col justify-center items-center">
+            <img src="{% static "/src/img/icon/event.svg" %}" alt="" class="size-[70px]" />
+            <b class="text-lg font-bold mb-4">برگزاری رویداد ها و کارگاه های مختلف</b>
+            <p class="text-center text-sm">
+                برگزاری سمینار ها و کارگاه های علمی دانشگاهی ،منطقه ای،ملی و بین المللی برگزاری دوره های آموزشی تکمیلی و تقویتی و تشکیل کارگاههای تخصصی ، برنامه ریزی و اجرای بازدیدهای علمی از مراکز علمی ، صنعتی و فناوری
+            </p>
+        </div>
+        <div class="flex flex-col justify-center items-center">
+            <img src="{% static "/src/img/icon/students.svg" %}" alt="" class="size-[70px]" />
+            <b class="text-lg font-bold mb-4">ایجاد ارتباط بین دانشجویان و انجمن</b>
+            <p class="text-center text-sm">حمایت و تشویق مادیی و معنوی از ابتکارات،خلاقیتهای علمی،فعالیتهای پژوهشی و اختراعات دانشجویان برگزاری نمایشگاه های ترویجی و علمی ارکان وتشکیلات</p>
+        </div>
+    </div>
+</section>
+
+{% comment %} <section id="Banner" class="opacity-0 translate-y-20 transition-all duration-1000 ease-out scroll-trigger">
+    <div class="flex flex-col lg:flex-row justify-self-center gap-x-20">
+        <div class="order-2"><img src="{% static "/src/img/icon/neko.png" %}" alt="بنر اصلی" class="size-96" /></div>
+        <div class="flex flex-col justify-center text-white text-center p-4 order-1">
+            <h2 class="text-2xl font-extrabold mb-5 animate-pulse-custom leading-tight">کامپیوتر کلاب و نیکوتک تقدیم میکنند</h2>
+            <a href="" class="underline underline-offset-8">دانلود نشریه نیکوتک.</a>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+<section id="NewestEvents" class="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 opacity-0 translate-y-20 transition-all duration-1000 ease-out scroll-trigger mx-auto xl:mx-[150px]">
+    <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center border-b-2 border-yellow-500 pb-4 flex justify-between items-center">
+        <span>جدیدترین رویدادها</span>
+        <a href="{% url "events:events" %}" class="text-blue-600 text-base font-normal hover:underline flex items-center"> نمایش تمام رویدادها <i class="fas fa-arrow-left mr-2 text-sm"></i> </a>
+    </h2>
+    <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 Events">
+        {% for event in newest_events %}
+        {% include "loop_items/single_event.html" with event=event %}
+        {% endfor %}
+    </div>
+</section>
+
+<section id="NewestPost" class="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 opacity-0 translate-y-20 transition-all duration-1000 ease-out scroll-trigger mx-auto xl:mx-[150px]">
+    <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center border-b-2 border-yellow-500 pb-4 flex justify-between items-center">
+        <span>جدیدترین مقالات</span>
+        <a href="{% url "blogs:blogs" %}" class="text-blue-600 text-base font-normal hover:underline flex items-center"> نمایش تمام پست‌ها <i class="fas fa-arrow-left mr-2 text-sm"></i> </a>
+    </h2>
+    <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 News">
+        {% for post in newest_posts %}
+        {% include "loop_items/single_blog.html" with post=post %}
+        {% endfor %}
+    </div>
+</section>
+<section id="TopForums" class="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 opacity-0 translate-y-20 transition-all duration-1000 ease-out scroll-trigger mx-auto xl:mx-[150px]">    <h2 class="text-3xl font-bold mb-8 text-gray-800 text-right border-b-2 border-yellow-500 pb-4">برترین تالارهای گفتگو</h2>
+    <div class="flex items-center relative w-full overflow-hidden">
+        <div id="gallery" class="flex items-center gap-4 whitespace-nowrap p-4 h-20">
+            {% for club in clubs %}
+            <!-- item -->
+            <div class="relative flex items-center snap-start w-[300px] bg-blue-100 p-4 rounded-lg h-16 flex-shrink-0">
+                <div class="flex gap-x-1 p-6 items-center">
+                    <div class="flex justify-center itemes-center size-8">
+                        {% if club.icon %}
+                        <img src="{{ club.icon.url }}" />
+                        {% else %}
+                        <div class="size-6 mt-2 rounded-full bg-[{{ club.club_color }}]"></div>
+                        {% endif %}
+                    </div>
+                    <span>{{ club.club_name }}</span>
+                    <small>{{ club.user_count }} کاربر</small>
+                </div>
+                {% if forloop.first %}
+                    <img src={%static "src/img/icon/gold.gif"%} alt="medal" class="absolute top-0 left-4 w-7 h-16 flex-shrink-0" />
+                {% elif forloop.counter == 2 %}
+                    <img src={%static "src/img/icon/silver.gif"%} alt="medal" class="absolute top-0 left-4 w-7 h-16 flex-shrink-0" />
+                {% elif forloop.counter == 3 %}
+                    <img src={%static "src/img/icon/bronze.gif"%} alt="medal" class="absolute top-0 left-4 w-7 h-16 flex-shrink-0" />
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock main %}
+
+{% block ext_style %}
+<meta name="google-site-verification" content="CE6prl4iySxIpmPMlB8EujYmunIJ6L5tU8MP1qsSu38" />
+{% endblock ext_style %}

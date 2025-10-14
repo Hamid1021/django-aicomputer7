@@ -1,0 +1,46 @@
+{% extends "base/_layout.html" %}
+{% load static %}
+
+{% block title %} | تماس با ما {% endblock %}
+
+{% block main %}
+<div class="max-w-3xl mx-auto my-10 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-yellow-500 inline-block pb-2">
+        تماس با ما
+    </h1>
+
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-center py-2 rounded {{ message.tags }} {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-700{% endif %}">
+            {{ message }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label class="block text-gray-700 mb-1">نام</label>
+            <input type="text" name="name" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">ایمیل</label>
+            <input type="email" name="email" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">موضوع</label>
+            <input type="text" name="subject" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">پیام</label>
+            <textarea name="message" rows="5" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none"></textarea>
+        </div>
+        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg transition">
+            ارسال پیام
+        </button>
+    </form>
+</div>
+{% endblock main %}

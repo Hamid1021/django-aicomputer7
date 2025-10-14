@@ -1,0 +1,23 @@
+{% extends "base/_layout.html" %} {% load static %} {% block title %}انجمن علمی کامپیوتر{% endblock title %} {% block main %}
+<!-- فرم تایید کد 4 رقمی -->
+<main class="flex-grow flex items-center justify-center px-4 py-12">
+    <div class="bg-white shadow-2xl rounded-xl border border-gray-100 p-8 w-full max-w-md animate-fade-in-up text-center">
+        <h2 class="text-3xl font-extrabold text-gray-800 mb-8">تایید شماره تلفن</h2>
+        <p class="text-gray-600 mb-6">لطفاً کد ۴ رقمی ارسال شده به شماره خود را وارد کنید</p>
+
+        <form action="dashboard.html" method="POST" class="flex justify-center mb-6">
+            <input type="text" maxlength="1" class="code-input" required />
+            <input type="text" maxlength="1" class="code-input" required />
+            <input type="text" maxlength="1" class="code-input" required />
+            <input type="text" maxlength="1" class="code-input" required />
+        </form>
+
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-md shadow-lg transition-colors duration-300">تایید و ادامه</button>
+
+        <div class="mt-4 text-sm text-gray-500">
+            <a href="#" class="text-blue-600 hover:text-blue-700">ارسال دوباره کد</a>
+        </div>
+    </div>
+</main>
+
+{% endblock main %}

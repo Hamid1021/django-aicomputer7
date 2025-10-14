@@ -1,0 +1,63 @@
+{% extends "base/_layout.html" %}
+{% load static %}
+
+{% block title %} | درخواست جدید {% endblock %}
+
+{% block main %}
+<div class="max-w-4xl mx-auto my-10 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-yellow-500 inline-block pb-2">
+        درخواست جدید
+    </h1>
+
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-center py-2 rounded {{ message.tags }} {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-700{% endif %}">
+            {{ message }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" class="space-y-4 mb-10">
+        {% csrf_token %}
+        <div>
+            <label class="block text-gray-700 mb-1">عنوان درخواست</label>
+            <input type="text" name="lesson_title" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">نام استاد (اختیاری)</label>
+            <input type="text" name="teacher_name" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-1">توضیحات</label>
+            <textarea name="description" rows="4" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none"></textarea>
+        </div>
+        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg transition">
+            ثبت درخواست
+        </button>
+    </form>
+
+    <!-- لیست درخواست‌های کاربر -->
+    {% if user_requests %}
+    <div>
+        <h2 class="text-xl font-bold text-gray-800 mb-4">درخواست‌های ثبت‌شده شما</h2>
+        <div class="space-y-3">
+            {% for req in user_requests %}
+            <div class="border rounded-xl p-4 shadow-sm bg-gray-50">
+                <h3 class="font-semibold text-gray-800">{{ req.lesson_title }}</h3>
+                {% if req.teacher_name %}
+                <p class="text-sm text-gray-600">استاد : {{ req.teacher_name }}</p>
+                {% endif %}
+                {% if req.description %}
+                <p class="text-gray-700 mt-2">{{ req.description }}</p>
+                {% endif %}
+                <p class="text-xs text-gray-400 mt-2">{{ req.date_create|date:"Y/m/d H:i" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock main %}

@@ -1,0 +1,66 @@
+{% extends "base/_layout.html" %} {% load static %} {% block title %} | درباره ما {% endblock %} {% block main %}
+<div class="max-w-5xl mx-auto p-6">
+    <!-- بخش معرفی -->
+    {% if about_main %}
+    <section class="text-center mb-12">
+        {% if about_main.image %}
+        <img src="{{ about_main.image.url }}" alt="{{ about_main.title }}" class="w-full rounded-xl shadow mb-6" />
+        {% endif %}
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ about_main.title }}</h1>
+        <p class="text-gray-600 leading-7">{{ about_main.content|linebreaks }}</p>
+    </section>
+    {% endif %}
+
+    <!-- تاریخچه -->
+    {% if history %}
+    <section class="bg-gray-50 p-6 rounded-xl shadow mb-10">
+        <h2 class="text-2xl font-bold border-b-2 border-yellow-500 pb-2 mb-4">{{ history.title }}</h2>
+        <p class="text-gray-700 leading-7">{{ history.content|linebreaks }}</p>
+    </section>
+    {% endif %}
+
+    <!-- ماموریت -->
+    {% if mission %}
+    <section class="bg-gray-50 p-6 rounded-xl shadow mb-10">
+        <h2 class="text-2xl font-bold border-b-2 border-yellow-500 pb-2 mb-4">{{ mission.title }}</h2>
+        <p class="text-gray-700 leading-7">{{ mission.content|linebreaks }}</p>
+    </section>
+    {% endif %}
+
+    <!-- تیم ما -->
+    {% if team %}
+    <section class="mb-12">
+        <h2 class="text-2xl font-bold text-center mb-6 border-b-2 border-yellow-500 inline-block pb-2">تیم ما</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for member in team %}
+            <div class="bg-white shadow rounded-xl p-4 text-center">
+                {% if member.photo %}
+                <img src="{{ member.photo.url }}" alt="{{ member.full_name }}" class="w-24 h-24 object-contain rounded-full mx-auto mb-3" />
+                {% else %}
+                <img src="{% static 'src/img/default-avatar.png' %}" class="w-24 h-24 object-contain rounded-full mx-auto mb-3" alt="avatar" />
+                {% endif %}
+                <h3 class="font-bold text-lg text-gray-800">{{ member.full_name }}</h3>
+                <p class="text-yellow-600 text-sm mb-2">{{ member.position }}</p>
+                <p class="text-gray-600 text-sm">{{ member.bio|truncatechars:120 }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- سوالات متداول -->
+    {% if faqs %}
+    <section>
+        <h2 class="text-2xl font-bold text-center mb-6 border-b-2 border-yellow-500 inline-block pb-2">سوالات متداول</h2>
+        <div class="space-y-3">
+            {% for faq in faqs %}
+            <details class="bg-white rounded-xl shadow p-4">
+                <summary class="font-semibold text-gray-800 cursor-pointer">{{ faq.question }}</summary>
+                <p class="text-gray-600 mt-2">{{ faq.answer|linebreaks }}</p>
+            </details>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock main %}

@@ -1,0 +1,118 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileNav = document.getElementById('mobile-nav');
+        if (hamburgerButton && mobileNav) {
+            hamburgerButton.addEventListener('click', () => {
+                mobileNav.classList.toggle('hidden');
+                const icon = hamburgerButton.querySelector('i');
+                if (mobileNav.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            });
+        }
+
+        function convertPersianToGregorian(persianDateStr) {
+            const [datePart, timePart] = persianDateStr.split(' ');
+            const [yearFa, monthFa, dayFa] = datePart.split('/').map(Number);
+            const [hour, minute, second] = timePart.split(':').map(Number);
+            let gregorianYear = yearFa + 621;
+            let gregorianMonth = monthFa - 1;
+            let gregorianDay = dayFa;
+
+            return new Date(gregorianYear, gregorianMonth, gregorianDay, hour, minute, second);
+        }
+
+        function updateEventTimers() {
+            document.querySelectorAll('[data-event-date]').forEach((element) => {
+                const eventDateStr = element.dataset.eventDate;
+                const eventDateTime = convertPersianToGregorian(eventDateStr);
+
+                const now = new Date();
+                const timeLeft = eventDateTime.getTime() - now.getTime(); // Time in milliseconds
+
+                if (timeLeft <= 0) {
+                    element.textContent = 'دوره پایان یافته است';
+                    element.classList.add('text-red-600');
+                    element.classList.remove('text-gray-800');
+                } else {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    element.textContent = `زمان باقی‌مانده: ${days} روز، ${hours} ساعت، ${minutes} دقیقه، ${seconds} ثانیه`;
+                    element.classList.remove('text-red-600');
+                    element.classList.add('text-gray-800');
+                }
+            });
+        }
+
+        setInterval(updateEventTimers, 1000);
+        updateEventTimers();
+    });
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-0', 'translate-y-20');
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                }
+            });
+        },
+        {threshold: 0.1}
+    );
+
+    document.querySelectorAll('.scroll-trigger').forEach((el) => {
+        observer.observe(el);
+    });
+</script>
+
+<script>
+    function toggleFav(blogId) {
+        fetch(`/blogs/blog/${blogId}/fav/`, {
+            method: 'POST',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 'success') {
+                    // آپدیت تعداد
+                    document.getElementById(`fav-count-${blogId}`).textContent = data.likes_count;
+
+                    // تغییر آیکون پر یا خالی
+                    const icon = document.getElementById(`fav-icon-${blogId}`);
+                    if (data.liked) {
+                        icon.classList.remove('far'); // خالی
+                        icon.classList.add('fas'); // پر
+                    } else {
+                        icon.classList.remove('fas'); // پر
+                        icon.classList.add('far'); // خالی
+                    }
+                }
+            });
+    }
+
+    function toggleSave(blogId) {
+        fetch(`/blogs/blog/${blogId}/save/`, {
+            method: 'POST',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 'success') {
+                    const icon = document.getElementById(`save-icon-${blogId}`);
+                    if (data.saved) {
+                        icon.classList.add('text-yellow-500');
+                    } else {
+                        icon.classList.remove('text-yellow-500');
+                    }
+                }
+            });
+    }
+</script>

@@ -1,0 +1,34 @@
+{% for object in object_list %}
+    <tr class="text-start">
+        <td>
+            <div class="d-flex px-2 py-1">
+                <div>
+                    <img src="{{ object.user.avatar.url }}"
+                         class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{ object.user.get_full_name }}</h6>
+                    <p class="text-xs text-secondary mb-0">{{ object.user.email }}</p>
+                </div>
+            </div>
+        </td>
+        <td>
+            <p class="text-xs font-weight-bold mb-0">{{ object.title }}</p>
+        </td>
+        <td class="text-center">
+            <span class="badge badge-sm bg-gradient-{{ object.is_answer|yesno:'success,danger' }}">{{ object.status|yesno:"بله, خیر" }}</span>
+        </td>
+        <td class="text-center">
+            <span class="badge badge-sm bg-gradient-{{ object.is_answer|yesno:'success,danger' }}">{{ object.is_answer|yesno:"بله, خیر" }}</span>
+        </td>
+        <td class="align-middle text-start">
+            <span class="text-secondary text-xs font-weight-bold">{{ object.jcreated }}</span>
+        </td>
+        <td class="align-middle text-center">
+            <a href="{% url 'Panel_Admin:ticket' object.pk %}" class="text-secondary font-weight-bold text-xs"
+               data-toggle="tooltip" data-original-title="Edit user">
+                مشاهده
+            </a>
+        </td>
+    </tr>
+{% endfor %}

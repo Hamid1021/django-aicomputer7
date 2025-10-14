@@ -1,0 +1,39 @@
+{% load render_partial %}
+<footer id="Footer" class="bg-gray-900 text-white py-10 px-4 md:px-8 mt-12 rounded-t-xl shadow-inner">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div class="col-span-1">
+            <h3 class="text-2xl font-bold mb-5 text-yellow-400 border-b border-yellow-600 pb-2">لینک های سریع</h3>
+            <ul class="space-y-3 text-base">
+                <li>
+                    <a href="{% url "application:home" %}" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fas fa-angle-left ml-2"></i>صفحه اصلی</a>
+                </li>
+                <li>
+                    <a href="{% url "blogs:blogs" %}" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fas fa-angle-left ml-2"></i>مقالات</a>
+                </li>
+                <li>
+                    <a href="{% url "events:events" %}" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fas fa-angle-left ml-2"></i>رویداد ها</a>
+                </li>
+                <li>
+                    <a href="{% url "about:about" %}" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fas fa-angle-left ml-2"></i>درباره ما</a>
+                </li>
+                <li>
+                    <a href="{% url "contact:contact" %}" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fas fa-angle-left ml-2"></i>تماس با ما</a>
+                </li>
+                <li>
+                    <a href="{% url "contact:request" %}" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fas fa-angle-left ml-2"></i>درخواست های شما</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-span-2">
+            <h3 class="text-2xl font-bold mb-5 text-yellow-400 border-b border-yellow-600 pb-2">انجمن های علمی دانشجویی</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
+                انجمن های علمی از بدو تاسیس خود به مرکزی برای پرورش استعدادهای علمی،مدیریتی ،تقویت نشاط علمی و اجرای برنامه های تکمیلی همسو با آموزش های دانشگاهی تبدیل شده است.در حال حاضر 16 انجمن علمی در دانشگاه آزاد اسلامی واحد
+                اسلامشهر وجود دارد که زیر نظر باشگاه پژوهشگران جوان و نخبگان دانشگاه مشغول فعالیت هستند و از حمایت های مادی و معنوی این معاونت برخوردار می باشند. نتیجه اعتماد به دانشجویان و زمینه سازی برای شکوفاشدن استعدادهای آن
+                ها،برجای ماندن آثاری ارزشمند در زمینه های علمی،فرهنگی و اجتماعی بوده است....
+            </p>
+        </div>
+        {% render_partial 'config.component.clubs' is_footer=True %}
+    </div>
+    <div class="text-center text-gray-500 text-md my-4 pt-6 border-t border-gray-700">&copy; ۱۴۰۳ تمامی حقوق محفوظ است. طراحی و توسعه توسط انجمن‌های علمی.</div>
+    <p class="text-sm text-gray-300 flex items-center justify-center"><a href="https://hrrp.ir" title="وبسايت سخصي حميدرضا رضايي">توسعه يافته توسط : حميدرضا رضایی | ماهان پاکروان نسب</a></p>
+</footer>

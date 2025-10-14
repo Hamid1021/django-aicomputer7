@@ -1,0 +1,57 @@
+{% load static %}
+<div class="News-item">
+    <div class="relative">
+        <div class="flex absolute top-1 left-1 gap-x-1">
+            {% for cat in post.post_cat.all %}
+            <a href="{% url 'blogs:category' cat.pk %}">
+                <span class="bg-[{{cat.post_bg_color}}] rounded-md px-3 text-xs text-white">{{ cat.title }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        <a href="{% url "blogs:blog" post.slug post.pk %}">
+        {% if post.post_image %}
+            <img src="{{ post.post_image.url }}" alt="{{ post.title }}" class="w-full max-h-60" />
+        {% else %}
+            <img src="/media/None" alt="{{ post.title }}" class="w-full max-h-60" />
+        {% endif %}
+        </a>
+    </div>
+    <div class="flex flex-col p-5">
+        <div>
+            <h3 class="text-md text-justify font-bold mb-2 text-gray-800">{{ post.title }}</h3>
+            <p class="grid grid-cols-1 md:grid-cols-2 gap-x-3">
+                {% for tag in post.post_tag.all %}
+                <a class="text-blue-500 text-sm" href="{% url 'blogs:blogs' %}?tag={{ tag.pk }}">{{ tag.title }}</a>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div class="flex flex-col px-5 py-2 bg-gray-200">
+        <div class="flex items-center justify-between text-gray-600 text-sm">
+            <div class="flex items-center">
+                <svg id="save-icon-{{ post.pk }}"
+                    onclick="toggleSave({{ post.pk }})"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="svg-inline--fa fa-bookmark fa-w-12 cursor-pointer text-gray-500 w-5 h-5 {% if post.pk in liked_posts %}text-yellow-500{% else %}{% endif %}"
+                    aria-hidden="true" focusable="false" data-prefix="far" data-icon="bookmark"
+                    role="img" viewBox="0 0 384 512">
+                    <path fill="currentColor"
+                        d="M336 0H48C21.49 0 0 21.49 0 48v464l192-112 192 112V48c0-26.51-21.49-48-48-48zm0 428.43l-144-84-144 84V54a6 6 0 0 1 6-6h276c3.314 0 6 2.683 6 5.996V428.43z"/>
+                </svg>
+            </div>
+            
+            <div class="flex gap-x-3">
+                <div class="flex items-center gap-x-1">
+                    <span>{{ post.blogs_set.count }}</span>
+                    <i class="far fa-comment mr-1"></i>
+                </div>
+                <div class="flex items-center gap-x-1">
+                    <span id="fav-count-{{ post.pk }}">{{ post.fav_set.count }}</span>
+                    <i id="fav-icon-{{ post.pk }}" 
+                    class="fa-heart mr-1 text-red-600 cursor-pointer {% if post.pk in liked_posts %}fas{% else %}far{% endif %}" 
+                    onclick="toggleFav({{ post.pk }})"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+{% extends 'Base/base.html' %}
+{% load static render_partial %}
+{% block title %}
+    Rtl
+{% endblock %}
+{% block ext_style %}
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous">
+</script>
+{% endblock ext_style %}
+{% block main %}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3">تیکت های ارسالی</h6>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    ارسال کننده
+                                </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">موضوع</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">مشاده شده</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">پاسخ داده شده</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">زمان ارسال</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">امکانات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_tickect">
+                            {% include 'one_ticket.html' with object_list=object_list %}
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th colspan="6" class="text-center">
+                                    <button dir="rtl" class="bg-gradient-success" id="load_more" data-page="2">
+                                        نمایش بیشتر
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block ext_script %}
+<script>
+    (function($) {
+      $('#load_more').on('click', function() {
+        var link = $(this);
+        var page = link.data('page');
+        $.ajax({
+          type: 'post',
+          url: '{% url 'Panel_Admin:load_more_ticket' %}',
+          data: {
+            'page': page,
+            'csrfmiddlewaretoken': "{{ csrf_token }}"
+          },
+          beforeSend:function(){
+        $("#load_more").addClass("disabled").text("بارگذاری ...");
+      },
+          success: function(data) {
+            if (data.has_next) {
+                link.data('page', page + 1);
+            } else {
+              link.hide();
+            }
+            $('#data_tickect').append(data.posts_html);
+            $("#load_more").removeClass("disabled").text("نمایش بیشتر");
+          }
+        });
+      });
+    }(jQuery));
+</script>
+{% endblock ext_script %}

@@ -1,0 +1,191 @@
+{% extends "base/_layout.html" %} {% load static %} {% block title %}{{ post.title }}{% endblock title %} {% block main %}
+<div class="container mx-auto px-4 xl:px-0 grid lg:grid-cols-3 gap-8 mt-10">
+    <!-- Main Article + Comments -->
+    <main class="lg:col-span-2 space-y-6">
+        <!-- Article -->
+        <article class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+            <div class="relative">
+                <div class="flex absolute top-1 left-1 gap-x-1">
+                    {% for cat in post.post_cat.all %}
+                    <span class="bg-[{{cat.post_bg_color}}] rounded-md px-3 text-xs text-white">{{ cat.title }}</span>
+                    {% endfor %}
+                </div>
+                <img src="{{ post.post_image.url }}" alt="{{ post.title }}" class="w-full h-80 object-cover rounded-lg mb-6" />
+            </div>
+
+            <h1 class="text-3xl font-bold mb-4 text-gray-800">{{ post.title }}</h1>
+            <div class="text-justify leading-8 text-gray-700 mb-6">{{ post.text|safe }}</div>
+
+            <div class="flex gap-x-3 text-gray-600 text-sm">
+                <div class="flex items-center gap-1">
+                    <i class="far fa-comment"></i>
+                    <span>{{ post.comment_set.count }} دیدگاه</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <i class="far fa-heart text-red-600"></i>
+                    <span>{{ post.fav_set.count }}</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Add New Comment -->
+        {% if request.user.is_authenticated %}
+        <!-- Comments Section -->
+        <section class="mt-10">
+            <h2 class="text-2xl font-bold border-b-2 border-yellow-500 pb-2 mb-6">دیدگاه‌ها</h2>
+
+            <div id="comments-list" class="space-y-4">
+                {% for comment in comments %} {% if comment.is_show %} {% if not comment.is_personal %}
+                <!-- کامنت عمومی -->
+                <div class="bg-white p-4 rounded-lg shadow border border-gray-100" id="comment-{{ comment.id }}">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-semibold text-gray-800">{{ comment.user.get_full_name|default:comment.user.username }}</span>
+                        <span class="text-xs text-gray-500">{{ comment.date_create|date:"Y/m/d H:i" }}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">{{ comment.message }}</p>
+                
+                {% elif comment.user == request.user %}
+                <!-- کامنت خصوصی برای نویسنده -->
+                <div class="bg-blue-50 p-4 rounded-lg shadow border border-blue-100" id="comment-{{ comment.id }}">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-semibold text-gray-800">{{ comment.user.get_full_name|default:comment.user.username }}</span>
+                        <span class="text-xs text-gray-500">{{ comment.date_create|date:"Y/m/d H:i" }}</span>
+                        <span class="text-blue-500 text-xs ml-2">خصوصی</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">{{ comment.message }}</p>
+                    {% endif %}
+
+                    <!-- Replies -->
+                    <div class="ml-6 mt-3 space-y-2">
+                        {% for reply in comment.replies.all %} {% if reply.is_show %} {% if not reply.is_personal %}
+                        <!-- پاسخ عمومی -->
+                        <div class="bg-gray-50 p-3 rounded-lg shadow text-sm">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-semibold">{{ reply.user.get_full_name|default:reply.user.username }}</span>
+                                <span class="text-xs text-gray-500">{{ reply.date_create|date:"Y/m/d H:i" }}</span>
+                            </div>
+                            <p class="text-gray-700 text-sm">{{ reply.message }}</p>
+                        </div>
+                        {% elif reply.user == request.user %}
+                        <!-- پاسخ خصوصی -->
+                        <div class="bg-blue-50 p-3 rounded-lg shadow border border-blue-100 text-sm">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-semibold">{{ reply.user.get_full_name|default:reply.user.username }}</span>
+                                <span class="text-xs text-gray-500">{{ reply.date_create|date:"Y/m/d H:i" }}</span>
+                                <span class="text-blue-500 text-xs ml-2">خصوصی</span>
+                            </div>
+                            <p class="text-gray-700 text-sm">{{ reply.message }}</p>
+                        </div>
+                        {% endif %} {% endif %} {% endfor %}
+                    </div>
+
+                    <button class="mt-3 text-blue-600 text-sm hover:underline reply-btn" data-comment="{{ comment.id }}">پاسخ دادن</button>
+                </div>
+                {% endif %} {% empty %}
+                <p class="text-gray-500">هیچ دیدگاهی ثبت نشده است.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Add New Comment -->
+            <section class="mt-8 bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-md">
+                <h3 class="text-xl font-semibold mb-4">ارسال دیدگاه جدید</h3>
+                <textarea id="new-comment" rows="4" class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-yellow-400" placeholder="دیدگاه خود را بنویسید..."></textarea>
+                <button id="send-comment" class="mt-2 bg-yellow-500 text-white px-5 py-2 rounded-md hover:bg-yellow-600">ارسال دیدگاه</button>
+            </section>
+
+            <!-- Pending Comments -->
+            <div id="pending-comments" class="mt-4 space-y-2"></div>
+        </section>
+        {% else %}
+        <div class="mt-8 bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-md text-center">
+            <p class="text-gray-700">
+                برای ارسال دیدگاه باید <a href="{% url 'account:login' %}" class="text-yellow-500 hover:underline">وارد سایت شوید</a>.
+            </p>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Sidebar -->
+    <aside class="lg:col-span-1 space-y-6">
+        <div class="bg-white rounded-xl shadow-lg p-5 border border-gray-200 sticky top-6">
+            <h3 class="text-xl font-bold border-b-2 border-yellow-500 pb-2 mb-4">دسته‌بندی‌ها</h3>
+            <div class="flex flex-wrap gap-2">
+                {% for cat in post.post_cat.all %}
+                <a href="{% url 'blogs:category' cat.pk %}" class="bg-[{{cat.post_bg_color}}] text-white text-xs px-3 py-1 rounded-md hover:opacity-80 transition">{{ cat.title }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-5 border border-gray-200 sticky top-6">
+            <h3 class="text-xl font-bold border-b-2 border-yellow-500 pb-2 mb-4">مقالات اخیر</h3>
+            <div class="flex flex-col gap-2">
+                {% for p in latest_posts %}
+                <a href="{% url 'blogs:blog' p.slug p.pk %}" class="flex items-center gap-3 p-2 rounded-lg hover:bg-yellow-50 transition">
+                    <img src="{{ p.post_image.url }}" alt="{{ p.title }}" class="w-12 h-12 object-cover rounded-md border border-gray-200" />
+                    <span class="text-gray-700 text-sm line-clamp-2">{{ p.title }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock main %} {% block ext_script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sendBtn = document.getElementById('send-comment');
+        const newComment = document.getElementById('new-comment');
+        const pendingList = document.getElementById('pending-comments');
+
+        sendBtn.addEventListener('click', function () {
+            const message = newComment.value.trim();
+            if (!message) return alert('لطفا متن دیدگاه را وارد کنید.');
+
+            const tempId = 'temp-' + Date.now();
+            const tempItem = document.createElement('div');
+            tempItem.id = tempId;
+            tempItem.className = `
+            relative bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg text-sm shadow-md opacity-0 translate-y-4 transition-all duration-500
+        `;
+            tempItem.innerHTML = `
+            <div class="flex items-center justify-between mb-1">
+                <span class="font-semibold">{{ request.user.get_full_name|default:request.user.username }}</span>
+                <span class="text-xs text-gray-500">در انتظار تایید</span>
+            </div>
+            <p class="text-gray-700 mt-1 break-words">${message}</p>
+            <div class="absolute top-2 right-2 animate-pulse text-yellow-500 text-lg">⏳</div>
+        `;
+            pendingList.prepend(tempItem);
+            setTimeout(() => {
+                tempItem.classList.remove('opacity-0', 'translate-y-4');
+            }, 50);
+            newComment.value = '';
+
+            fetch("{% url 'blogs:add_comment' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: `post_id={{ post.id }}&message=${encodeURIComponent(message)}`,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.status === 'success') tempItem.remove();
+                    else {
+                        tempItem.querySelector('p').textContent = 'خطا در ارسال دیدگاه';
+                        tempItem.querySelector('span.text-xs').textContent = '';
+                        tempItem.classList.replace('border-yellow-400', 'border-red-400');
+                        tempItem.classList.replace('bg-yellow-50', 'bg-red-50');
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    tempItem.querySelector('p').textContent = 'خطا در ارسال دیدگاه';
+                    tempItem.querySelector('span.text-xs').textContent = '';
+                    tempItem.classList.replace('border-yellow-400', 'border-red-400');
+                    tempItem.classList.replace('bg-yellow-50', 'bg-red-50');
+                });
+        });
+    });
+</script>
+{% endblock ext_script %}

@@ -1,0 +1,25 @@
+{% if is_footer %}
+<div class="col-md-3 mb-4">
+    <h3 class="text-2xl font-bold mb-5 text-yellow-400 border-b border-yellow-600 pb-2">انجمن ها</h3>
+    <div class="flex flex-wrap gap-x-2">
+        {% for club in clubs %}
+        <a href="{% url 'clubs:club_detail' club.pk %}" class="px-3 text-white rounded-md my-1" style="background-color: {{ club.club_color }}"> {{ club.club_name }} </a>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<section id="ScientificAssociations" class="animate-fade-in-up duration-1000">
+    <h2 class="text-3xl font-bold text-right mb-8 text-gray-800 border-b-2 border-yellow-500 pb-4 mx-auto xl:mx-[150px]">انجمن‌های علمی دانشجویی</h2>
+    <div class="ScientificAssociations">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            {% for club in clubs %}
+            <a href="{% url 'clubs:club_detail' club.pk %}">
+                <div class="scientific-associations-item" style="background-color: {{ club.club_color }}">
+                    {{ club.club_name }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

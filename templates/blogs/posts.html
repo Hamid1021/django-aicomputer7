@@ -1,0 +1,32 @@
+{% extends "base/_layout.html" %} {% load static %} {% block title %} | پست ها {% endblock title %} {% block main %}
+<section id="NewestPost" class="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 opacity-0 translate-y-20 transition-all duration-1000 ease-out scroll-trigger mx-auto xl:mx-[150px]">
+    <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center border-b-2 border-yellow-500 pb-4 flex justify-between items-center">
+        <span>مقالات</span>
+    </h2>
+
+    <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 News">
+        {% for post in page_obj %} {% include "loop_items/single_blog.html" with post=post %} {% empty %}
+        <p class="text-gray-500 col-span-full text-center">هیچ مقاله‌ای موجود نیست.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex justify-center mt-8 gap-x-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">قبلی</a>
+        {% else %}
+        <span class="px-3 py-1 bg-gray-100 text-gray-400 rounded cursor-not-allowed">قبلی</span>
+        {% endif %} {% for num in page_obj.paginator.page_range %} {% if page_obj.number == num %}
+        <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ num }}</span>
+        {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+        <a href="?page={{ num }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">{{ num }}</a>
+        {% endif %} {% endfor %} {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">بعدی</a>
+        {% else %}
+        <span class="px-3 py-1 bg-gray-100 text-gray-400 rounded cursor-not-allowed">بعدی</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock main%}
