@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@theme {
+    --breakpoint-xs: 500px;
+    --breakpoint-2xs: 360px;
+    --breakpoint-3xs: 285.71px;
+
+    /* Animation definitions */
+    --animate-spin: spin 3s linear infinite;
+    --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-bounce: bounce 1s infinite;
+    --animate-fade-in: fade-in 3s ease-in-out infinite;
+    --animate-fade-out: fade-out 3s ease-out infinite;
+    --animate-fade-in-down: fade-in-down 3s ease-in infinite;
+    --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
+    --animate-fade-in-left: fade-in-left 3s ease-in-out infinite;
+    --animate-fade-in-right: fade-in-right 3s ease-in-out infinite;
+    --animate-fade-out-down: fade-out-down 3s ease-in-out infinite;
+    --animate-fade-out-up: fade-out-up 3s ease-in-out infinite;
+    --animate-fade-out-left: fade-out-left 3s ease-in-out infinite;
+    --animate-fade-out-right: fade-out-right 3s ease-in-out infinite;
+    --animate-fade-out-top-left: fade-out-top-left 3s ease-in-out infinite;
+    --animate-fade-out-top-right: fade-out-top-right 3s ease-in-out infinite;
+    --animate-marquee: marquee 4s linear infinite;
+    --animate-pause: paused;
+    --animate-diagonal-light: diagonal-light 5s infinite;
+    --animate-pulse-custom: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-bounce-slow: bounce-slow 3s ease-in-out infinite;
+
+  @keyframes diagonal-light {
+    0% { transform: translateX(100%) rotate(15deg); opacity: 1; }
+    28.57% { transform: translateX(-15800%) rotate(15deg); opacity: 0; }
+    100% { transform: translateX(-100%) rotate(15deg); opacity: 0; }
+  }
+  
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-200%); }
+  }
+  
+  @keyframes spin {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+  }
+  
+  @keyframes ping {
+    0% { transform: scale(1); opacity: 1; }
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-25%); }
+  }
+  
+  @keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes fade-out {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  @keyframes fade-in-down {
+    0% { opacity: 0; transform: translate3d(0, -100%, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fade-in-left {
+    0% { opacity: 0; transform: translate3d(-100%, 0, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  
+  @keyframes fade-in-right {
+    0% { opacity: 0; transform: translate3d(100%, 0, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  
+  @keyframes fade-out-down {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translate3d(0, 100%, 0); }
+  }
+  
+  @keyframes fade-out-up {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translate3d(0, -100%, 0); }
+  }
+  
+  @keyframes fade-out-left {
+    0% { opacity: 1; transform: translate3d(0, 0, 0); }
+    100% { opacity: 0; transform: translate3d(-100%, 0, 0); }
+  }
+  
+  @keyframes fade-out-right {
+    0% { opacity: 1; transform: translate3d(0, 0, 0); }
+    100% { opacity: 0; transform: translate3d(100%, 0, 0); }
+  }
+  
+  @keyframes fade-out-top-left {
+    0% { opacity: 1; transform: translate3d(0, 0, 0); }
+    100% { opacity: 0; transform: translate3d(-100%, -100%, 0); }
+  }
+  
+  @keyframes fade-out-top-right {
+    0% { opacity: 1; transform: translate3d(0, 0, 0); }
+    100% { opacity: 0; transform: translate3d(100%, -100%, 0); }
+  }
+  
+  @keyframes pulse-custom {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #f0f2f5; /* Light gray background */
+}
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(50%);
+    }
+}
+
+#gallery {
+    animation: scroll 40s linear infinite;
+}
+
+#gallery:hover {
+    animation-direction: reverse;
+}
+
+
+#ScientificAssociations .scientific-associations-item {
+    @apply flex justify-center text-white p-5 rounded-lg text-center shadow-lg hover:shadow-xl transition-all duration-300
+ transform hover:-translate-y-1 hover:scale-105 cursor-pointer ring-2 ring-offset-2;
+}
+
+#TopBanner {
+    @apply bg-gradient-to-r from-blue-500 to-orange-500 text-white text-center py-2 text-sm md:text-base font-medium shadow-md;
+}
+
+.ScientificAssociations {
+    @apply bg-white p-6 rounded-xl shadow-2xl border border-gray-100 mx-0 xl:mx-[150px];
+}
+
+#header {
+    @apply bg-gray-50 text-white shadow-xl py-4 px-4 md:px-8 rounded-b-lg;
+}
+#header .container img {
+    @apply w-16 h-16 rounded-full mr-3 transform transition-transform duration-300 hover:rotate-6 hover:scale-110;
+}
+
+#desktop-nav a{
+    @apply hover:text-blue-400 transition-all duration-300 transform hover:scale-105 px-2 py-1 rounded-md;
+}
+
+#register-desktop { 
+    @apply hidden md:flex bg-blue-400 px-4 py-2 rounded-full font-bold shadow-md
+  hover:bg-blue-300 transition-all duration-300 transform hover:scale-105 focus:ring-4 focus:ring-blue-300;
+}
+
+#mobile-nav a {
+    @apply block text-gray-900 hover:text-gray-900 transition-colors duration-300 py-2 w-full text-center;
+}
+
+#mobile-nav {
+    @apply flex-col items-center mt-4 space-y-3 bg-gray-50 p-4 rounded-lg shadow-inner;
+}
+
+#register-mobile { 
+    @apply bg-blue-400 text-gray-900 px-4 py-2 rounded-full font-bold shadow-md
+    hover:bg-blue-300 transition-colors duration-300 w-full text-center mt-2;
+}
+
+.goles {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-10 items-start justify-center bg-gradient-to-br from-gray-800
+    to-gray-700 text-white p-10 rounded-xl shadow-2xl mx-auto xl:mx-[150px]
+}
+
+#Banner {
+    @apply bg-[#212529] rounded-xl shadow-2xl overflow-hidden mx-auto xl:mx-[150px]
+}
+
+#NewestPost .News .News-item{
+    @apply flex flex-col border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-xl
+    transition-all duration-300 transform hover:-translate-y-1 bg-white justify-between
+}
+
+#NewestEvents .Events .Events-item{
+    @apply flex flex-col border border-gray-200 rounded-lg overflow-hidden
+    shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white
+}
